@@ -6,7 +6,6 @@ import joblib
 from joblib import Memory
 from PIL import Image
 import base64
-from io import BytesIO
 
 # Set up caching
 memory = Memory(location='news_cache', verbose=0)
@@ -70,7 +69,6 @@ class NewsFetcher:
         self.region = region
 
     def fetch_news(self, search_query):
-        print(f"Fetching news for: {search_query}")  # Debugging line
         return fetch_news_cached(search_query, self.lang, self.region)
 
 # Define tell_news function to both display and speak news
@@ -93,12 +91,6 @@ def ask_for_news_type():
         return "national"
     elif "sports" in response:
         return "sports"
-    elif "sports" and "national" in response:
-        return "sports" and "national"
-    elif "sports" and "international" in response:
-        return "sports" and "international"
-    elif "national" and "international" in response:
-        return "national" and "international"
     else:
         return "general"
 
@@ -113,59 +105,54 @@ def set_background_image(image_path):
             background: url(data:image/png;base64,{encoded_image})
         }}
         </style>
-        """,
+        """, 
         unsafe_allow_html=True
     )
 
 # Main Function
 def main():
     st.set_page_config(page_title="Info Live | Technovergence", page_icon=":newspaper:", layout="wide")
-   
+    
     # Set background image
-    background_image_url = "file:///C:\\Users\\Dell\\Desktop\\background.jpg"
-    st.markdown(f"""
-        <style>
-            .stApp {{
-                background-image: url({"C:\\Users\\Dell\\Desktop\\background.jpg"});
-                background-size: cover;
-            }}
-        </style>
-    """, unsafe_allow_html=True)
-
-    # Set background image
-    background_image_path = r"C:\\Users\\Dell\\Desktop\\background.jpg"  # Replace with your desktop path
+    background_image_path = r"C:\\Users\\Dell\\Desktop\\Technovergence\\assets\\background.jpg"  # Use forward slashes
     set_background_image(background_image_path)
 
     # Add top-left and top-right images with small size
-    top_left_image_path = r"C:\\Users\\Dell\\Desktop\\info-live-logo.png"  # Replace with your desktop path
-    top_right_image_path = r"C:\\Users\\Dell\\Desktop\\zsfc-logo.png"  # Replace with your desktop path
+    top_left_image_path = r"C:\\Users\\Dell\\Desktop\\Technovergence\\assets\\info-live-logo.png"
+    top_right_image_path = r"C:\\Users\\Dell\\Desktop\\Technovergence\\assets\\zsfc-logo.png"
     top_left_image = Image.open(top_left_image_path)
     top_right_image = Image.open(top_right_image_path)
    
     # Use columns to position the images at the top left and right
-    col1, col2, col3 = st.columns([1, 4,  1])  # Adjust column widths as needed
+    col1, col2, col3 = st.columns([1, 4, 1])  # Adjust column widths as needed
     with col1:
-        st.image(top_left_image, width=360) # Set width to 50 pixels for a smaller size
+        st.image(top_left_image, width=300)  # Set width to 360 pixels for a small size
     with col3:
-        st.image(top_right_image, width=220) # Set width to 50 pixels for a smaller size
-   
+        st.image(top_right_image, width=200)  # Set width to 360 pixels for a small size
+
     st.title("Info-Live | AI News Reader")
     st.markdown("<p style='text-align: center; font-size: 50px;'>Welcome to InfoLive!</p>", unsafe_allow_html=True)
     st.markdown("<style>h1 {text-align: center; color: #3498db;}</style>", unsafe_allow_html=True)
     st.markdown("<style>button {background-color: #3498db; color: white;}</style>", unsafe_allow_html=True)
-   
-    if st.markdown("<center>{}</center>".format(st.button("Restart", help="Click to restart the news")), unsafe_allow_html=True):
-        news_type = ask_for_news_type()
-        news_fetcher = NewsFetcher()
-        if news_type == "international":
-            news_list = news_fetcher.fetch_news("World News")
-        elif news_type == "national":
-            news_list = news_fetcher.fetch_news("National News India")
-        elif news_type == "sports":
-            news_list = news_fetcher.fetch_news("Sports News India")
-        else:
-            news_list = news_fetcher.fetch_news("India News")
-        tell_news(news_type.capitalize(), news_list)
+
+    # Create an instance of NewsFetcher
+    news_fetcher = NewsFetcher()
+
+    # Ask for news type
+    news_type = ask_for_news_type()
+
+    # Fetch news based on user input
+    if news_type == "international":
+        news = news_fetcher.fetch_news("world news")
+    elif news_type == "national":
+        news = news_fetcher.fetch_news("india news")
+    elif news_type == "sports":
+        news = news_fetcher.fetch_news("sports news")
+    else:
+        news = news_fetcher.fetch_news("latest news")
+
+    # Display and speak news
+    tell_news(news_type, news)
 
 if __name__ == "__main__":
     main()
