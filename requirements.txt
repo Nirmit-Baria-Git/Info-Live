@@ -1,8 +1,0 @@
-streamlit
-pyttsx3
-GoogleNews
-speech_recognition
-joblib
-PIL
-base64
-io
