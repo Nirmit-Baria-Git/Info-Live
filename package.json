@@ -1,0 +1,39 @@
+{
+  "name": "Info-Live",
+  "version": "1.0.0",
+  "description": "A Streamlit application that fetches and reads news articles using voice synthesis.",
+  "main": "main.py",
+  "scripts": {
+    "start": "main.py",
+    "build": "echo 'No build step required'",
+    "test": "pytest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nirmit-Baria-Git/Info-Live"
+  },
+  "keywords": [
+    "news",
+    "ai",
+    "streamlit",
+    "voice synthesis",
+    "application"
+  ],
+  "author": "Nirmit Baria",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nirmit-Baria-Git/Info-Live/blob/main/issues"
+  },
+  "homepage": "https://github.com/Nirmit-Baria-Git/Info-Live/blob/main/README.md",
+  "dependencies": {
+    "streamlit": "^1.0.0",
+    "pyttsx3": "^2.7.2",
+    "google-news": "^1.6.0",
+    "SpeechRecognition": "^3.8.1",
+    "joblib": "^1.0.1",
+    "Pillow": "^8.4.0"
+  },
+  "devDependencies": {
+    "pytest": "^6.2.5"
+  }
+}
